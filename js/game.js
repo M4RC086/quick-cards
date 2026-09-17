@@ -3,7 +3,10 @@ const cardParent = document.getElementById('card-parent');
 
 const cards = JSON.parse(localStorage.getItem('cards'));
 let notUsedCards = [...cards];
-cardParent.innerHTML = `<button class="card-button">${getNextCard()}</button>`;
+let isBack = false;
+let currentCard = null;
+
+cardParent.innerHTML = `<button class="card-button">${getNextText()}</button>`;
 
 
 menuButton.addEventListener('click', gotoMenu);
@@ -19,18 +22,26 @@ cardParent.addEventListener('click', (e) => {
 });
 
 function clickCard(){
-  let nextCard = getNextCard();
-  cardParent.innerHTML = `<button class="card-button">${nextCard}</button>`;
+  let inBack = false;
+
+  cardParent.innerHTML = `<button class="card-button">${getNextText()}</button>`;
 }
 
-function getNextCard(){
+function getNextText() {
   console.log(notUsedCards);
-  if (notUsedCards.length === 0){
-    return 'No cards left';
+
+  if (isBack) {
+    isBack = false;
+    return currentCard[1];
   }
 
+  // moving to a new card
+  if (notUsedCards.length === 0) return 'No cards left';
+
   let index = Math.floor(Math.random() * notUsedCards.length);
-  let card = notUsedCards[index];
+  currentCard = notUsedCards[index];
   notUsedCards.splice(index, 1);
-  return card;
+
+  isBack = true;
+  return currentCard[0];
 }
