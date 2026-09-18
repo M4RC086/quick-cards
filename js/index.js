@@ -1,4 +1,5 @@
 const cardsTableParent = document.getElementById('cards-table');
+const importInput = document.getElementById('import-input');
 
 let cards = JSON.parse(localStorage.getItem('cards')) ||
     [];
@@ -54,8 +55,45 @@ cardsTableParent.addEventListener('click', function(e){
     }
 });
 
+document.getElementById('export-button').addEventListener('click', exportJSON);
+function exportJSON() {
+  const jsonString = JSON.stringify(cards, null, 2); // pretty-printed
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "quick-cards.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url); // cleanup
+}
+
 const playButton = document.getElementById('play-button');
 
 playButton.addEventListener('click', function(){
     window.location.href = 'game.html';
 });
+
+
+
+importInput.addEventListener('change', (event) => {
+  const file = event.target.files[0]; // first selected file
+
+  console.log('Hiya');
+  console.log(file.name, file.size, file.type);
+
+  const reader = new FileReader();
+  
+  reader.onload = (e) => {
+    const text = e.target.result;
+    cards = JSON.parse(text);
+    createCardsTable(cards);
+    console.log(JSON.parse(text));
+  };
+  reader.readAsText(file);
+});
+
+
