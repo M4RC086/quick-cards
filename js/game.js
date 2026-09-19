@@ -6,8 +6,7 @@ let notUsedCards = [...cards];
 let isBack = false;
 let currentCard = null;
 
-cardParent.innerHTML = `<button class="card-button">${getNextText()}</button>`;
-
+clickCard()
 
 menuButton.addEventListener('click', gotoMenu);
 function gotoMenu(){
@@ -22,9 +21,15 @@ cardParent.addEventListener('click', (e) => {
 });
 
 function clickCard(){
-  let inBack = false;
+  const frontStyle = 'color: #ff4c4c';
+  const backStyle = 'color:  #ff9090';
 
-  cardParent.innerHTML = `<button class="card-button">${getNextText()}</button>`;
+  if (!isBack){ //front
+    cardParent.innerHTML = `<button class="card-button" style="${frontStyle}">${getNextText()}</button>`;
+  }else{
+    cardParent.innerHTML = `<button class="card-button" style="${backStyle}">${getNextText()}</button>`;
+  }
+  
 }
 
 function getNextText() {
