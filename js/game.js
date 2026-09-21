@@ -1,7 +1,7 @@
 const menuButton = document.getElementById('menu-button');
 const cardParent = document.getElementById('card-parent');
 
-const cards = JSON.parse(localStorage.getItem('cards'));
+const cards = JSON.parse(localStorage.getItem('cards')) || [];
 let notUsedCards = [...cards];
 let isBack = false;
 let currentCard = null;
@@ -14,15 +14,21 @@ function gotoMenu(){
 }
 
 
+let isFlipping = false;
+
 cardParent.addEventListener('click', (e) => {
-  if (e.target.classList.contains('card-button')) {
+  if (!e.target.classList.contains('card-button') || isFlipping) return;
+  isFlipping = true;
+  e.target.classList.add('flip-out');
+  setTimeout(() => {
     clickCard();
-  }
+    isFlipping = false;
+  }, 150);
 });
 
 function clickCard(){
-  const frontStyle = 'color: #ff4c4c';
-  const backStyle = 'color:  #ff9090';
+  const frontStyle = '--card-bg: #fdfcf8; --card-fg: #1d2a3a; --card-accent: #d64545; --card-rule: #bcd2e4';
+  const backStyle  = '--card-bg: #fff1a3; --card-fg: #1d2a3a; --card-accent: #d64545; --card-rule: #e6d27f';
 
   if (!isBack){ //front
     cardParent.innerHTML = `<button class="card-button" style="${frontStyle}">${getNextText()}</button>`;

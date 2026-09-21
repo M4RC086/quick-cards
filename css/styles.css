@@ -1,84 +1,360 @@
-body{
-  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background: #b19582;
+/* ==========================================================================
+   QUICK-CARDS — styles.css
+   Idea: a desk with index cards on it.
+   Front of a card = white paper, back of a card = yellow paper.
+   ========================================================================== */
+
+
+/* ---------- Tokens (change colors here and everything follows) ---------- */
+:root {
+  --desk:        #2f4b50;   /* page background */
+  --paper:       #fdfcf8;   /* white index card */
+  --paper-alt:   #e9eff2;   /* input row, hover fills */
+  --highlight:   #ffd84d;   /* yellow: main actions + back of card */
+  --ink:         #1d2a3a;   /* text + outlines */
+  --ink-soft:    #6a7888;   /* placeholders */
+  --rule:        #bcd2e4;   /* light blue ruled lines */
+  --margin-red:  #d64545;   /* the red line on an index card */
+  --danger:      #b3382c;
+  --danger-soft: #f8e1de;
+  --blue:        #2b4fb5;   /* keyboard focus on paper */
+
+  --font-ui:   system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-card: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+
+  --radius: 6px;
 }
 
 
-.center{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height:10vh;
-
-  flex-direction: column;
-
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-h1{
-  font-size:40px;
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--desk);
 }
 
-
-button{
-  border: 1px solid #000;
-  border-radius: 3px;
-  box-shadow: 0 0 3px rgba(0,0,0,0.4);
-  
-}
-button:hover{
-  background: #cccccc;
+:focus-visible {
+  outline: 3px solid var(--highlight);
+  outline-offset: 2px;
 }
 
-
-
-
-
-.main-button{
-  font-size: 40px;
-  margin-bottom: 100px;
+#cards-table :focus-visible {
+  outline-color: var(--blue);
 }
 
 
+/* ---------- Buttons ---------- */
+button {
+  --btn-edge: var(--ink);
 
-.card-parent{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-button{
-  position: absolute;
-  top: 150px;
-  width: 400px;
-  height: 500px;
-  border: 6px solid #000000;
-  border-radius: 5px;
-  font-size: 50px;
-  background: #e8e8e8;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  background-color: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 0.5em 1em;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
-  text-shadow: 0 0 50px rgba(0,0,0,0.5);
-}
-.card-button:hover{
-  border: none;
-  background: #dadada;
-  border: 6px solid #000000;
-
+  box-shadow: 0 2px 0 var(--btn-edge);
+  transition: transform 0.1s, box-shadow 0.1s, background-color 0.15s;
 }
 
-
-.menu-button{
-  font-size: 40px;
+button:hover {
+  background-color: var(--paper-alt);
 }
 
-.table-button{
-  font-size: 15px;
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 var(--btn-edge);
 }
 
-table{
-  background: #e8e8e8;
-  padding: 25px 15px;
-  border: 6px solid #000000;
-  border-radius: 5px;
+
+/* ---------- Home page: import / export ---------- */
+#export-button {
+  margin-bottom: 10px;
+}
+
+input[type="file"] {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--paper);
+}
+
+input[type="file"]::file-selector-button {
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  background-color: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 0.4em 0.9em;
+  margin-right: 0.75em;
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--ink);
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: var(--paper-alt);
+}
+
+
+/* ---------- Home page: title + Learn button ---------- */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 10px;
+}
+
+h1 {
+  margin: 0.4em 0 0.5em;
+  font-family: var(--font-card);
+  font-size: clamp(30px, 6vw, 46px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--paper);
+  text-align: center;
+}
+
+.main-button {
+  margin: 8px 0 40px;
+  padding: 0.45em 1.7em;
+  font-size: 26px;
+  background-color: var(--highlight);
+}
+
+.main-button:hover {
+  background-color: #ffe37a;
+}
+
+
+/* ---------- Home page: cards table ---------- */
+#cards-table {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+/* order matters: the "add" row keeps its red line even when it is the only row */
+tr:last-child td {
+  border-bottom: 0;
+}
+
+tr:first-child td {
+  background: var(--paper-alt);
+  border-bottom: 2px solid var(--margin-red);
+}
+
+td:last-child {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.table-text {
+  margin: 0;
+  font-family: var(--font-card);
+  font-size: 18px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  padding: 0.55em 0.75em;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--ink-soft);
+  border-radius: var(--radius);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="text"]::placeholder {
+  color: var(--ink-soft);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(43, 79, 181, 0.25);
+}
+
+.table-button {
+  padding: 0.4em 0.85em;
+  font-size: 14px;
+}
+
+#add-card-button {
+  background-color: var(--highlight);
+}
+
+#add-card-button:hover {
+  background-color: #ffe37a;
+}
+
+#trash-button {
+  --btn-edge: var(--danger);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+#trash-button:hover {
+  background-color: var(--danger-soft);
+}
+
+
+/* ==========================================================================
+   Game page
+   ========================================================================== */
+.menu-button {
+  font-size: 16px;
+}
+
+.card-parent {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 0 60px;
+}
+
+/*
+  The card colors come from 4 CSS variables.
+  game.js sets them per side (front / back) through the inline style,
+  so these are only the defaults (the "front" look).
+*/
+.card-button {
+  --card-bg:     var(--paper);
+  --card-fg:     var(--ink);
+  --card-accent: var(--margin-red);
+  --card-rule:   var(--rule);
+  --card-drop:   0 14px 28px rgba(0, 0, 0, 0.35);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(92vw, 420px);
+  height: min(62vh, 520px);
+  padding: 72px 28px 28px;
+
+  font-family: var(--font-card);
+  font-size: clamp(26px, 6vw, 44px);
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
+  color: var(--card-fg);
+
+  /* index card: red header line + blue ruled lines */
+  background-color: var(--card-bg);
+  background-image:
+    linear-gradient(var(--card-accent), var(--card-accent)),
+    repeating-linear-gradient(to bottom, transparent 0 35px, var(--card-rule) 35px 36px);
+  background-repeat: no-repeat;
+  background-size: 100% 2px, 100% calc(100% - 58px);
+  background-position: 0 56px, 0 58px;
+
+  border: 1px solid rgba(29, 42, 58, 0.55);
+  border-radius: var(--radius);
+
+  /* two sheets peeking out underneath = a deck */
+  box-shadow:
+    0 7px 0 -3px #dcdad2,
+    0 13px 0 -6px #c4c2b9,
+    var(--card-drop);
+
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: card-flip 0.15s ease-out;
+}
+
+.card-button:hover {
+  background-color: var(--card-bg);
+  transform: translateY(-3px);
+  --card-drop: 0 20px 34px rgba(0, 0, 0, 0.4);
+}
+
+.card-button:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow:
+    0 7px 0 -3px #dcdad2,
+    0 13px 0 -6px #c4c2b9,
+    0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes card-flip {
+  from { transform: perspective(900px) rotateY(-90deg); }
+  to   { transform: perspective(900px) rotateY(0); }
+}
+
+.card-button.flip-out {
+  animation: card-flip-out 0.15s ease-in forwards;
+}
+
+@keyframes card-flip-out {
+  from { transform: perspective(900px) rotateY(0); }
+  to   { transform: perspective(900px) rotateY(90deg); }
+}
+
+
+/* ---------- Small screens ---------- */
+@media (max-width: 480px) {
+  body {
+    padding: 14px;
+  }
+
+  td {
+    padding: 8px;
+  }
+
+  .table-text {
+    font-size: 16px;
+  }
+
+  .table-button {
+    font-size: 13px;
+    padding: 0.35em 0.6em;
+  }
+
+  .main-button {
+    font-size: 22px;
+  }
+}
+
+
+/* ---------- Respect "reduce motion" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

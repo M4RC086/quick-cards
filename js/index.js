@@ -28,6 +28,8 @@ function createCardsTable(cards){
 }
 
 function addCard(){
+    document.getElementById('front-input').focus();
+
     const frontInput = document.getElementById('front-input');
     const backInput = document.getElementById('back-input');
     const front = frontInput.value.trim();
@@ -46,6 +48,10 @@ function deleteCard(index){
 
 
 cardsTableParent.addEventListener('click', function(e){
+    cardsTableParent.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' && e.target.matches('#front-input, #back-input')) addCard();
+    });
+
     if (e.target.id === 'add-card-button'){
         addCard();
     } else if (e.target.id == 'trash-button'){
