@@ -1,23 +1,15 @@
-/* ==========================================================================
-   QUICK-CARDS — styles.css
-   Idea: a desk with index cards on it.
-   Front of a card = white paper, back of a card = yellow paper.
-   ========================================================================== */
-
-
-/* ---------- Tokens (change colors here and everything follows) ---------- */
 :root {
-  --desk:        #2f4b50;   /* page background */
-  --paper:       #fdfcf8;   /* white index card */
-  --paper-alt:   #e9eff2;   /* input row, hover fills */
-  --highlight:   #ffd84d;   /* yellow: main actions + back of card */
-  --ink:         #1d2a3a;   /* text + outlines */
-  --ink-soft:    #6a7888;   /* placeholders */
-  --rule:        #bcd2e4;   /* light blue ruled lines */
-  --margin-red:  #d64545;   /* the red line on an index card */
+  --desk:        #2f4b50;   /* Page background */
+  --paper:       #fdfcf8;   /* White index card */
+  --paper-alt:   #e9eff2;   /* Input row, hover fills */
+  --highlight:   #ffd84d;   /* Yellow: main actions + back of card */
+  --ink:         #1d2a3a;   /* Text + outlines */
+  --ink-soft:    #6a7888;   /* Placeholders */
+  --rule:        #bcd2e4;   /* Light blue ruled lines */
+  --margin-red:  #d64545;   /* The red line on an index card */
   --danger:      #b3382c;
   --danger-soft: #f8e1de;
-  --blue:        #2b4fb5;   /* keyboard focus on paper */
+  --blue:        #2b4fb5;   /* Keyboard focus on paper */
 
   --font-ui:   system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-card: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
@@ -26,7 +18,6 @@
 }
 
 
-/* ---------- Base ---------- */
 *,
 *::before,
 *::after {
@@ -52,7 +43,6 @@ body {
 }
 
 
-/* ---------- Buttons ---------- */
 button {
   --btn-edge: var(--ink);
 
@@ -78,7 +68,6 @@ button:active {
 }
 
 
-/* ---------- Home page: import / export ---------- */
 #export-button {
   margin-bottom: 10px;
 }
@@ -107,7 +96,6 @@ input[type="file"]::file-selector-button:hover {
 }
 
 
-/* ---------- Home page: title + Learn button ---------- */
 .center {
   display: flex;
   flex-direction: column;
@@ -140,7 +128,6 @@ h1 {
 }
 
 
-/* ---------- Home page: cards table ---------- */
 #cards-table {
   width: 100%;
   background: var(--paper);
@@ -161,7 +148,6 @@ td {
   vertical-align: middle;
 }
 
-/* order matters: the "add" row keeps its red line even when it is the only row */
 tr:last-child td {
   border-bottom: 0;
 }
@@ -245,11 +231,6 @@ input[type="text"]:focus {
   padding: 28px 0 60px;
 }
 
-/*
-  The card colors come from 4 CSS variables.
-  game.js sets them per side (front / back) through the inline style,
-  so these are only the defaults (the "front" look).
-*/
 .card-button {
   --card-bg:     var(--paper);
   --card-fg:     var(--ink);
@@ -348,8 +329,6 @@ input[type="text"]:focus {
   }
 }
 
-
-/* ---------- Respect "reduce motion" ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
